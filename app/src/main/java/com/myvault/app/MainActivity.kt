@@ -71,6 +71,7 @@ class MainActivity : ComponentActivity() {
 
     private fun showVault() {
         val root=LinearLayout(this).apply { orientation=LinearLayout.VERTICAL; setBackgroundColor(dark); setPadding(16,22,16,10) }
+        root.addView(ImageView(this).apply { setImageResource(R.drawable.my_logo); adjustViewBounds=true; scaleType=ImageView.ScaleType.FIT_CENTER },LinearLayout.LayoutParams(104,76).apply { gravity=Gravity.CENTER_HORIZONTAL })
         root.addView(TextView(this).apply { text="MY Vault"; textSize=29f; setTextColor(green); gravity=Gravity.CENTER; setPadding(8,8,8,12) })
         root.addView(TextView(this).apply { text="فضای خصوصی عکس‌ها و ویدئوهای تو"; setTextColor(-1); gravity=Gravity.CENTER; setPadding(4,0,4,14) })
         val actions=LinearLayout(this).apply { orientation=LinearLayout.HORIZONTAL }
