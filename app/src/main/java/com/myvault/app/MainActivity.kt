@@ -178,8 +178,9 @@ class MainActivity : ComponentActivity() {
                 put(MediaStore.MediaColumns.RELATIVE_PATH,if(item.video)"Movies/MY Vault" else "Pictures/MY Vault")
             }
             val uri=contentResolver.insert(collection,values) ?: throw Exception("ساخت مقصد ناموفق بود")
-            contentResolver.openOutputStream(uri)?.use { out->source.inputStream().use{it.copyTo(out)} } ?: throw Exception("نوشتن فایل ناموفق بود")
-            if(source.length()==0L) throw Exception("فایل خالی است")
+            val expected=source.length(); var copied=0L
+            contentResolver.openOutputStream(uri)?.use { out->source.inputStream().use { input -> val buffer=ByteArray(8192); while(true) { val count=input.read(buffer); if(count<0) break; out.write(buffer,0,count); copied+=count } } } ?: throw Exception("نوشتن فایل ناموفق بود")
+            if(expected<=0L || copied!=expected) throw Exception("بررسی کپی فایل ناموفق بود؛ نسخه خصوصی حفظ شد")
             source.delete(); items.removeAll{it.id==item.id}; saveItems(); showVault(); toast("فایل بازگردانده شد")
         } catch(e:Exception) { toast("بازگردانی ناموفق بود: "+e.message) }
     }
